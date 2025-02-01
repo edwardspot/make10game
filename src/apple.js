@@ -8,6 +8,23 @@ class Apple {
         this.isDragging = false;
     }
 
+    static spawnApples(game) {
+        const rows = 10; // apples per row
+        const cols = 17; // apples per column    
+        const spacing = 50; // space between apples
+        const startX = 110; // starting X position
+        const startY = 150; // starting Y position
+
+        for (let row = 0; row < rows; row++) {
+            for (let col = 0; col < cols; col++) {
+                let x = startX + col * spacing;
+                let y = startY + row * spacing;
+                let value = randomInt(9) + 1;
+                game.addEntity(new Apple(game, x, y, value));
+            }
+        }
+    }
+
     update() {
         if (this.isDragging && this.game.mouse) {
             this.x = this.game.mouse.x;
@@ -18,11 +35,11 @@ class Apple {
     draw(ctx) {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-        ctx.fillStyle = "red";
+        ctx.fillStyle = "grey";
         ctx.fill();
         ctx.stroke();
         ctx.fillStyle = "white";
-        ctx.font = "20px Arial";
+        ctx.font = "21px Roman";
         ctx.textAlign = "center";
         ctx.fillText(this.value, this.x, this.y + 7);
     }
