@@ -13,6 +13,7 @@ class GameEngine {
         this.timeLeft = 120; // 120 seconds countdown
         this.gameOver = false;
         this.score = 0;
+        this.isGameStarted = false;
     }
 
     init(ctx) {
@@ -22,7 +23,6 @@ class GameEngine {
     }
 
     start() {
-        this.running = true;
         const gameLoop = () => {
             this.loop();
             requestAnimFrame(gameLoop, this.ctx.canvas);
@@ -76,51 +76,68 @@ class GameEngine {
     }
 
     draw() {
-        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        if(this.isGameStarted) {
+            this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
-        for (let i = this.entities.length - 1; i >= 0; i--) {
-            this.entities[i].draw(this.ctx, this);
-        }
+            for (let i = this.entities.length - 1; i >= 0; i--) {
+                this.entities[i].draw(this.ctx, this);
+            }
 
-        //Dragging Selection Box
-        if (this.isDragging && this.dragStart && this.dragEnd) {
-            const x = Math.min(this.dragStart.x, this.dragEnd.x);
-            const y = Math.min(this.dragStart.y, this.dragEnd.y);
-            const width = Math.abs(this.dragStart.x - this.dragEnd.x);
-            const height = Math.abs(this.dragStart.y - this.dragEnd.y);
-            
-            this.ctx.save();
-            this.ctx.strokeStyle = "green";
-            this.ctx.lineWidth = 2;
-            this.ctx.strokeRect(x, y, width, height);
-            this.ctx.restore();
-        }
+            //Dragging Selection Box
+            if (this.isDragging && this.dragStart && this.dragEnd) {
+                const x = Math.min(this.dragStart.x, this.dragEnd.x);
+                const y = Math.min(this.dragStart.y, this.dragEnd.y);
+                const width = Math.abs(this.dragStart.x - this.dragEnd.x);
+                const height = Math.abs(this.dragStart.y - this.dragEnd.y);
+                
+                this.ctx.save();
+                this.ctx.strokeStyle = "green";
+                this.ctx.lineWidth = 2;
+                this.ctx.strokeRect(x, y, width, height);
+                this.ctx.restore();
+            }
+        
 
-        //Timer & Score
-        this.ctx.fillStyle = "white";
-        this.ctx.font = "20px Arial";
-        this.ctx.fillText(`Time Left: ${Math.ceil(this.timeLeft)}s`, 80, 30);
-        this.ctx.fillText(`Score: ${this.score}`, 950, 30);
-
-        //Game Over Screen
-        if (this.gameOver) {
-            this.ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
-            this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-
-            this.ctx.fillStyle = "red";
-            this.ctx.font = "40px Arial";
-            this.ctx.fillText("Times Up!", this.ctx.canvas.width / 2, this.ctx.canvas.height / 2);
-
+            //Timer & Score
             this.ctx.fillStyle = "white";
             this.ctx.font = "20px Arial";
-            this.ctx.fillText(`Score: ${this.score}`, this.ctx.canvas.width / 2, this.ctx.canvas.height / 2 + 40);
-            this.ctx.fillText("Press R to Restart", this.ctx.canvas.width / 2, this.ctx.canvas.height / 2 + 80);
+            this.ctx.fillText(`Time Left: ${Math.ceil(this.timeLeft)}s`, 80, 30);
+            this.ctx.fillText(`Score: ${this.score}`, 950, 30);
+
+            //Game Over Screen
+            if (this.gameOver) {
+                this.ctx.fillStyle = "rgba(155, 36, 36, 0.43)";
+                this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+
+                this.ctx.fillStyle = "red";
+                this.ctx.font = "40px Arial";
+                this.ctx.fillText("Times Up!", this.ctx.canvas.width / 2, this.ctx.canvas.height / 2);
+
+                this.ctx.fillStyle = "white";
+                this.ctx.font = "20px Arial";
+                this.ctx.fillText(`Score: ${this.score}`, this.ctx.canvas.width / 2, this.ctx.canvas.height / 2 + 40);
+                this.ctx.fillText("Press R to Restart", this.ctx.canvas.width / 2, this.ctx.canvas.height / 2 + 80);
+            }
+        
+        } else {
+            this.ctx.fillStyle = "rgba(20, 20, 20, 0.33)";
+            this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+            this.ctx.fillStyle = "white";
+            this.ctx.font = "40px Arial";
+            this.ctx.textAlign = "center";
+            this.ctx.fillText("Make 10", this.ctx.canvas.width / 2, this.ctx.canvas.height / 2);
+            this.ctx.font = "20px Arial";
+            this.ctx.fillText("Click Anywhere to Start", this.ctx.canvas.width / 2, this.ctx.canvas.height / 2 + 50); 
+            //TODO:implement random statment generator.
+            this.ctx.font = "15px Arial";
+            this.ctx.fillText("According to data, Scores with less than 50 are bad...", this.ctx.canvas.width / 2, this.ctx.canvas.height / 2 + 300);
         }
+        
+    
     }
 
     update() {
-        if (!this.gameOver) {
-            let timeElapsed = this.timer.tick();
+        if (this.isGameStarted) {
             this.timeLeft -= this.clockTick;
 
             if (this.timeLeft <= 0) {
@@ -140,6 +157,7 @@ class GameEngine {
 
     loop() {
         this.clockTick = this.timer.tick();
+
         if (!this.gameOver){
             this.update();
             this.draw();

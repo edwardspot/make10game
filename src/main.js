@@ -8,13 +8,11 @@ ASSET_MANAGER.downloadAll(() => {
 	ctx.imageSmoothingEnabled = false;
     document.body.style.backgroundColor = "black";
 
-	canvas.style.display = "block"; 
+	canvas.style.display = "black"; 
     canvas.style.margin = "100px auto";
 
-	Apple.spawnApples(gameEngine);
-	
-
 	gameEngine.init(ctx);
-
+	new StartScreen(gameEngine);
+	
 	gameEngine.start();
 });
