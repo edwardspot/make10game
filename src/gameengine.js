@@ -14,6 +14,11 @@ class GameEngine {
         this.gameOver = false;
         this.score = 0;
         this.isGameStarted = false;
+
+        // Audio Files
+        this.music = new Audio("Pekora.ogg");
+        this.popSFX = new Audio("pop.mp3");
+        this.gameoverSFX = new Audio("gameover.mp3")
     }
 
     init(ctx) {
@@ -27,6 +32,8 @@ class GameEngine {
             this.loop();
             requestAnimFrame(gameLoop, this.ctx.canvas);
         };
+        this.music.play();
+        this.music.volume = 0.1;
         gameLoop();
     }
 
@@ -118,6 +125,8 @@ class GameEngine {
 
             //Game Over Screen
             if (this.gameOver) {
+                this.gameoverSFX.play();
+                this.gameoverSFX.volume = 0.1;
                 this.ctx.fillStyle = "rgba(155, 36, 36, 0.43)";
                 this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
@@ -166,6 +175,14 @@ class GameEngine {
             }
 
             this.entities = this.entities.filter(entity => !entity.removeFromWorld);
+        }
+
+        if(this.music) {
+            if(PARAMS.MUSICOFF){
+                this.music.volume = 0;
+            } else {
+                this.music.volume = 0.1;
+            }
         }
     }
 
@@ -226,6 +243,8 @@ class GameEngine {
         if (sum === 10) {
             this.score += selectedApples.length;
             selectedApples.forEach(apple => apple.removeFromWorld = true);
+            this.popSFX.play();
+            this.popSFX.volume = 0.1;
         }
     }
 
@@ -238,6 +257,8 @@ class GameEngine {
     }
 
     restart() {
+        this.music.play()
+        this.music.volume = 0.1;
         this.entities = [];
         this.timeLeft = 120;
         this.score = 0;
