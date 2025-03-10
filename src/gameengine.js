@@ -32,9 +32,6 @@ class GameEngine {
             this.loop();
             requestAnimFrame(gameLoop, this.ctx.canvas);
         };
-        this.music.play();
-        this.music.loop = true;
-        this.music.volume = 0.1;
         gameLoop();
     }
 
@@ -92,6 +89,9 @@ class GameEngine {
     }
 
     addEntity(entity) {
+        this.music.play();
+        this.music.loop = true;
+        this.music.volume = 0.1;
         this.entities.push(entity);
     }
 
