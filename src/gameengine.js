@@ -10,7 +10,7 @@ class GameEngine {
 
         // Timer & Game State
         this.timer = new Timer();
-        this.timeLeft = 120; // 120 seconds countdown
+        this.timeLeft = 1; // 120 seconds countdown
         this.gameOver = false;
         this.score = 0;
         this.isGameStarted = false;
@@ -129,6 +129,11 @@ class GameEngine {
                 this.ctx.font = "20px Arial";
                 this.ctx.fillText(`Score: ${this.score}`, this.ctx.canvas.width / 2, this.ctx.canvas.height / 2 + 40);
                 this.ctx.fillText("Press R to Restart", this.ctx.canvas.width / 2, this.ctx.canvas.height / 2 + 80);
+                this.ctx.fillText("According to data..", this.ctx.canvas.width / 2, this.ctx.canvas.height / 2 + 200);
+                this.ctx.fillText("Score < 50 is Bad", this.ctx.canvas.width / 2, this.ctx.canvas.height / 2 + 250);
+                this.ctx.fillText("Score > 70 is Average", this.ctx.canvas.width / 2, this.ctx.canvas.height / 2 + 280);
+                this.ctx.fillText("Score > 90 is God", this.ctx.canvas.width / 2, this.ctx.canvas.height / 2 + 310);
+
             }
         
         } else {
@@ -140,9 +145,6 @@ class GameEngine {
             this.ctx.fillText("Make 10", this.ctx.canvas.width / 2, this.ctx.canvas.height / 2);
             this.ctx.font = "20px Arial";
             this.ctx.fillText("Click Anywhere to Start", this.ctx.canvas.width / 2, this.ctx.canvas.height / 2 + 50); 
-            //TODO:implement random statment generator.
-            this.ctx.font = "15px Arial";
-            this.ctx.fillText("According to data, Scores with less than 50 are bad...", this.ctx.canvas.width / 2, this.ctx.canvas.height / 2 + 300);
         }
         
     
