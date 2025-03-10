@@ -52,15 +52,27 @@ class GameEngine {
             this.isDragging = true;
             this.dragStart = getXandY(e);
             this.dragEnd = this.dragStart;
+
+            this.highlightSelection();
         });
 
         this.ctx.canvas.addEventListener("mousemove", e => {
             if (this.isDragging) this.dragEnd = getXandY(e);
+            this.highlightSelection();
         });
 
         this.ctx.canvas.addEventListener("mouseup", () => {
             this.isDragging = false;
+
             this.checkSelection();
+            
+            // Reset all apple highlights BEFORE checking selection
+            for (let entity of this.entities) {
+                if (entity instanceof Apple) {
+                    entity.isHighlighted = false;
+                }
+            }
+        
         });
 
         // Restart Game on 'R'
@@ -162,6 +174,28 @@ class GameEngine {
             this.update();
             this.draw();
         }
+    }
+
+    highlightSelection() {
+        if (!this.dragStart || !this.dragEnd) return;
+
+        const xMin = Math.min(this.dragStart.x, this.dragEnd.x);
+        const yMin = Math.min(this.dragStart.y, this.dragEnd.y);
+        const xMax = Math.max(this.dragStart.x, this.dragEnd.x);
+        const yMax = Math.max(this.dragStart.y, this.dragEnd.y);
+
+        for (let entity of this.entities) {
+            if (entity instanceof Apple) {
+                // Check if apple is inside the selection box
+                let insideBox = (
+                    entity.x >= xMin && entity.x <= xMax &&
+                    entity.y >= yMin && entity.y <= yMax
+                );
+    
+                entity.isHighlighted = insideBox && this.isDragging;
+            }
+        }
+
     }
 
     

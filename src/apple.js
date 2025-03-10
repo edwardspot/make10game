@@ -6,6 +6,7 @@ class Apple {
         this.radius = 20;
         this.value = value;
         this.isDragging = false;
+        this.isHighlighted = false;
     }
 
     static spawnApples(game) {
@@ -35,7 +36,7 @@ class Apple {
     draw(ctx) {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-        ctx.fillStyle = "grey";
+        ctx.fillStyle = this.isHighlighted? "green" : "grey";
         ctx.fill();
         ctx.stroke();
         ctx.fillStyle = "white";
