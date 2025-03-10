@@ -33,6 +33,7 @@ class GameEngine {
             requestAnimFrame(gameLoop, this.ctx.canvas);
         };
         this.music.play();
+        this.music.loop = true;
         this.music.volume = 0.1;
         gameLoop();
     }
@@ -126,7 +127,7 @@ class GameEngine {
             //Game Over Screen
             if (this.gameOver) {
                 this.gameoverSFX.play();
-                this.gameoverSFX.volume = 0.1;
+                this.gameoverSFX.volume = 0.3;
                 this.ctx.fillStyle = "rgba(155, 36, 36, 0.43)";
                 this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
@@ -181,7 +182,9 @@ class GameEngine {
             if(PARAMS.MUSICOFF){
                 this.music.volume = 0;
             } else {
-                this.music.volume = 0.1;
+                const volumeSlider = document.getElementById("volume");
+                const volume = volumeSlider ? volumeSlider.value / 100 : 0.1; // Default volume is 0.1
+                this.music.volume = volume;
             }
         }
     }
@@ -244,7 +247,7 @@ class GameEngine {
             this.score += selectedApples.length;
             selectedApples.forEach(apple => apple.removeFromWorld = true);
             this.popSFX.play();
-            this.popSFX.volume = 0.1;
+            this.popSFX.volume = 0.3;
         }
     }
 
@@ -257,8 +260,6 @@ class GameEngine {
     }
 
     restart() {
-        this.music.play()
-        this.music.volume = 0.1;
         this.entities = [];
         this.timeLeft = 120;
         this.score = 0;

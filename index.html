@@ -20,14 +20,24 @@
         };
         const toggleMusic = (checkBox) => {
                 PARAMS.MUSICOFF = checkBox.checked;
-            }
+        };
+        const adjustVolume = (slider) => {
+            const volumeValue = document.getElementById("volumeValue");
+            volumeValue.textContent = slider.value;
+        };
     </script>
 </head>
 <div>
     <input type="checkbox" id="music" onchange="toggleMusic(this)" />
     <label for="music" style="color: white;">Turn Off Music</label>
 </div>
-<body>
+
+<div>
+    <label for="volume" style="color: white;">Music Volume</label>
+    <input type="range" id="volume" min="0" max="100" value="30" onchange="adjustVolume(this)" />
+    <span id="volumeValue" style="color: white;">30</span>
+</div>
+
     <body style="text-align: center; background-color: black; color: white; font-family: Arial, sans-serif;"></body>
         <canvas id="gameWorld" width="1024" height="720" style="background: rgb(1, 2, 2); border: 1px solid black" tabindex="0" autofocus></canvas>
         <h2>How to Play</h2>
