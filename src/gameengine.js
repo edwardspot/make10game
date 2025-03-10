@@ -10,7 +10,7 @@ class GameEngine {
 
         // Timer & Game State
         this.timer = new Timer();
-        this.timeLeft = 1; // 120 seconds countdown
+        this.timeLeft = 120; // 120 seconds countdown
         this.gameOver = false;
         this.score = 0;
         this.isGameStarted = false;
